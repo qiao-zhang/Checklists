@@ -10,19 +10,28 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol AddItemViewControllerDelegate: class {
+  func addItemViewControllerDidCancel(_ controller: AddItemViewController)
+  func addItemViewController(_ controller: AddItemViewController,
+                             didFinishAdding item: ChecklistItem)
+}
+
 class AddItemViewController: UITableViewController {
   
   @IBOutlet weak var textField: UITextField!
   @IBOutlet weak var doneButton: UIBarButtonItem!
   
   @IBAction func cancel() {
-    dismiss(animated: true, completion: nil)
+    delegate?.addItemViewControllerDidCancel(self)
   }
   
   @IBAction func done() {
-    dismiss(animated: true, completion: nil)
+    guard let name = textField.text else { return }
+    let item = ChecklistItem(name: name)
+    delegate?.addItemViewController(self, didFinishAdding: item)
   }
   
+  weak var delegate: AddItemViewControllerDelegate?
   let disposeBag = DisposeBag()
 
   override func viewDidLoad() {

@@ -9,11 +9,11 @@
 import Foundation
 
 class ChecklistItem {
-  var title = ""
+  var name = ""
   var completed = false
   
-  init(title: String, completed: Bool = false) {
-    self.title = title
+  init(name: String, completed: Bool = false) {
+    self.name = name
     self.completed = completed
   }
   
@@ -31,8 +31,8 @@ extension ChecklistItem {
             ("Soccer practice", false),
             ("Eat ice cream", true),
            ]
-           .map { (title, completed) in
-             ChecklistItem(title: title, completed: completed)
+           .map { (name, completed) in
+             ChecklistItem(name: name, completed: completed)
            }
   }
 }

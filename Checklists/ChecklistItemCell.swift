@@ -13,7 +13,7 @@ class ChecklistItemCell: UITableViewCell {
   @IBOutlet weak var itemTitleLabel: UILabel!
   
   func configureWith(checklistItem: ChecklistItem) {
-    configureTitle(with: checklistItem.title)
+    configureTitle(with: checklistItem.name)
     configureCheckmark(with: checklistItem.completed)
   }
   

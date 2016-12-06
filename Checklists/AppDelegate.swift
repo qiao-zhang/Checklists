@@ -12,13 +12,24 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-
+  let dataManager = DataManager.sharedInstance
+  var allListViewController: AllListsViewController? {
+    guard
+      let navigationController = window?.rootViewController
+        as? UINavigationController,
+      let allListViewController = navigationController.viewControllers[0]
+        as? AllListsViewController
+    else { return nil }
+    return allListViewController
+  }
 
   func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions:
       [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
+    
+    allListViewController?.dataManager = dataManager
     return true
   }
 
@@ -49,11 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 private extension AppDelegate {
   func saveData() {
-    let navigationController =
-      window!.rootViewController as! UINavigationController
-    let controller =
-      navigationController.viewControllers[0] as! AllListsViewController
-    controller.saveChecklists()
+    dataManager.saveChecklists()
   }
 }
 

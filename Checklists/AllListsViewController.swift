@@ -9,14 +9,7 @@
 import UIKit
 
 class AllListsViewController: UITableViewController {
-  
-  var lists: [Checklist]
-  
-  required init?(coder aDecoder: NSCoder) {
-    lists = []
-    super.init(coder: aDecoder)
-    loadChecklists()
-  }
+  var dataManager: DataManager!
 }
 
 // MARK: - Navigation
@@ -44,7 +37,7 @@ extension AllListsViewController {
 
   override func tableView(_ tableView: UITableView,
                           numberOfRowsInSection section: Int) -> Int {
-    return lists.count
+    return dataManager.lists.count
   }
 
   override func tableView(
@@ -52,7 +45,7 @@ extension AllListsViewController {
     cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     let cell = makeCell(for: tableView)
-    cell.textLabel?.text = lists[indexPath.row].name
+    cell.textLabel?.text = dataManager.lists[indexPath.row].name
     cell.accessoryType = .detailDisclosureButton
     return cell
   }
@@ -68,10 +61,10 @@ extension AllListsViewController {
   override func tableView(_ tableView: UITableView,
                           commit editingStyle: UITableViewCellEditingStyle,
                           forRowAt indexPath: IndexPath) {
-    guard lists.count > indexPath.row else { return }
+    guard dataManager.lists.count > indexPath.row else { return }
     
     if editingStyle == .delete {
-      lists.remove(at: indexPath.row)
+      dataManager.lists.remove(at: indexPath.row)
       
       tableView.deleteRows(at: [indexPath], with: .automatic)
     }
@@ -83,7 +76,7 @@ extension AllListsViewController {
 extension AllListsViewController {
   override func tableView(_ tableView: UITableView,
                           didSelectRowAt indexPath: IndexPath) {
-    let checklist = lists[indexPath.row]
+    let checklist = dataManager.lists[indexPath.row]
     performSegue(withIdentifier: "ShowChecklist", sender: checklist)
   }
   
@@ -101,7 +94,7 @@ extension AllListsViewController {
     else { return }
     
     controller.delegate = self
-    controller.checklistToEdit = lists[indexPath.row]
+    controller.checklistToEdit = dataManager.lists[indexPath.row]
     
     present(navigationController, animated: true, completion: nil)
   }
@@ -118,8 +111,8 @@ extension AllListsViewController: ListDetailViewControllerDelegate {
   func listDetailViewController(_ controller: ListDetailViewController,
                                 didFinishAdding checklist: Checklist) {
     dismiss(animated: true, completion: nil)
-    let index = lists.count
-    lists.append(checklist)
+    let index = dataManager.lists.count
+    dataManager.lists.append(checklist)
     
     let indexPath = IndexPath(row: index, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
@@ -128,39 +121,9 @@ extension AllListsViewController: ListDetailViewControllerDelegate {
   func listDetailViewController(_ controller: ListDetailViewController,
                                 didFinishEditing checklist: Checklist) {
     dismiss(animated: true, completion: nil)
-    guard let index = lists.index(of: checklist) else { return }
+    guard let index = dataManager.lists.index(of: checklist) else { return }
     let indexPath = IndexPath(row: index, section: 0)
     tableView.cellForRow(at: indexPath)?.textLabel?.text = checklist.name
   }
 }
 
-// MARK: - Persistence
-extension AllListsViewController {
-  static private let listsKey = "Checklists"
-  
-  var documentsDirectory: URL {
-    return FileManager.default.urls(for: .documentDirectory,
-                                    in: .userDomainMask).first!
-  }
-  
-  var dataFilePath: URL {
-    return documentsDirectory.appendingPathComponent("Checklists.plist")
-  }
-  
-  func saveChecklists() {
-    let data = NSMutableData()
-    let archiver = NSKeyedArchiver(forWritingWith: data)
-    archiver.encode(lists, forKey: AllListsViewController.listsKey)
-    archiver.finishEncoding()
-    data.write(to: dataFilePath, atomically: true)
-  }
-  
-  func loadChecklists() {
-    guard let data = try? Data(contentsOf: dataFilePath) else { return }
-    let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-    lists =
-      unarchiver.decodeObject(forKey: AllListsViewController.listsKey)
-        as! [Checklist]
-    unarchiver.finishDecoding()
-  }
-}

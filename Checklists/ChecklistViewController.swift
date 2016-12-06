@@ -82,11 +82,21 @@ extension ChecklistViewController {
   }
   
   override func tableView(_ tableView: UITableView,
+                          canEditRowAt indexPath: IndexPath) -> Bool {
+    return !items.isEmpty
+  }
+  
+  override func tableView(_ tableView: UITableView,
                           commit editingStyle: UITableViewCellEditingStyle,
                           forRowAt indexPath: IndexPath) {
+    guard items.count > indexPath.row else { return }
     items.remove(at: indexPath.row)
-    tableView.deleteRows(at: [indexPath], with: .automatic)
     saveChecklistItems()
+    if items.isEmpty {
+      tableView.reloadData()
+    } else {
+      tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
   }
 }
 
@@ -120,8 +130,12 @@ extension ChecklistViewController: ItemDetailViewControllerDelegate {
     let newRowIndex = items.count
     items.append(item)
     
-    let indexPath = IndexPath(row: newRowIndex, section: 0)
-    tableView.insertRows(at: [indexPath], with: .automatic)
+    if items.count == 1 {
+      tableView.reloadData()
+    } else {
+      let indexPath = IndexPath(row: newRowIndex, section: 0)
+      tableView.insertRows(at: [indexPath], with: .automatic)
+    }
     
     dismiss(animated: true, completion: nil)
     saveChecklistItems()

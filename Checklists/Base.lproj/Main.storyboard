@@ -19,16 +19,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Checklist Item Cell" id="3mf-Za-jFU" customClass="ChecklistItemCell" customModule="Checklists" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="Checklist Item Cell" id="3mf-Za-jFU" customClass="ChecklistItemCell" customModule="Checklists" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3mf-Za-jFU" id="T1d-QA-gup">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="308" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Am-ms-WF2" userLabel="Checkmark Label">
                                             <rect key="frame" x="8" y="13" width="17" height="17"/>
-                                            <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="Courier-Bold" family="Courier" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -49,6 +49,7 @@
                                 <connections>
                                     <outlet property="checkmarkLabel" destination="3Am-ms-WF2" id="K46-gd-iiM"/>
                                     <outlet property="itemTitleLabel" destination="tNU-ZF-ijk" id="rRJ-PK-3WU"/>
+                                    <segue destination="Ojk-bQ-Uec" kind="presentation" identifier="EditItem" trigger="accessoryAction" id="TNg-SB-RgP"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Nothing Here Cell" id="3tB-eS-KQl">
@@ -80,7 +81,7 @@
                     <navigationItem key="navigationItem" title="Checklists" id="L2K-IC-J7r">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="KWm-YR-v3h">
                             <connections>
-                                <segue destination="Ojk-bQ-Uec" kind="presentation" id="ccJ-xn-V77"/>
+                                <segue destination="Ojk-bQ-Uec" kind="presentation" identifier="AddItem" id="ccJ-xn-V77"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -92,7 +93,7 @@
         <!--Add Item-->
         <scene sceneID="d1p-pW-VLH">
             <objects>
-                <tableViewController id="eME-vA-VYY" customClass="AddItemViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="eME-vA-VYY" customClass="ItemDetailViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="AJM-jF-xCm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -190,4 +191,7 @@
             <point key="canvasLocation" x="2101.5999999999999" y="148.87556221889056"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="TNg-SB-RgP"/>
+    </inferredMetricsTieBreakers>
 </document>

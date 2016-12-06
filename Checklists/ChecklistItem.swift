@@ -8,9 +8,16 @@
 
 import Foundation
 
-class ChecklistItem {
+class ChecklistItem: NSObject, NSCoding {
+
   var name = ""
   var completed = false
+  
+  required init?(coder aDecoder: NSCoder) {
+    name = aDecoder.decodeObject(forKey: "Name") as! String
+    completed = aDecoder.decodeBool(forKey: "Completed")
+    super.init()
+  }
   
   init(name: String, completed: Bool = false) {
     self.name = name
@@ -22,6 +29,15 @@ class ChecklistItem {
   }
 }
 
+// MARK: - Persistence
+extension ChecklistItem {
+  func encode(with aCoder: NSCoder) {
+    aCoder.encode(name, forKey: "Name")
+    aCoder.encode(completed, forKey: "Completed")
+  }
+}
+
+// MARK: - DEV
 extension ChecklistItem {
   class func samples() -> [ChecklistItem] {
     return [

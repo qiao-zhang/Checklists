@@ -22,6 +22,6 @@ class ChecklistItemCell: UITableViewCell {
   }
   
   func configureCheckmark(with checked: Bool) {
-    checkmarkLabel.text = checked ? " " : "✓"
+    checkmarkLabel.text = checked ? "✓" : " "
   }
 }

@@ -17,26 +17,19 @@ class ChecklistViewController: UITableViewController {
     super.init(coder: aDecoder)
     loadChecklistItems()
   }
-  
-  // MARK: View Life Cycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
-  }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
+}
+
+// MARK: - Navigation
+extension ChecklistViewController {
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "AddItem" {
       
       guard
         let navController = segue.destination as? UINavigationController,
         let controller =
-          navController.topViewController as? ItemDetailViewController
-      else { return }
+        navController.topViewController as? ItemDetailViewController
+        else { return }
       
       controller.delegate = self
       
@@ -45,16 +38,15 @@ class ChecklistViewController: UITableViewController {
       guard
         let navController = segue.destination as? UINavigationController,
         let controller =
-          navController.topViewController as? ItemDetailViewController,
+        navController.topViewController as? ItemDetailViewController,
         let cell = sender as? UITableViewCell,
         let indexPath = tableView.indexPath(for: cell)
-      else { return }
+        else { return }
       
       controller.delegate = self
       controller.itemToEdit = items[indexPath.row]
     }
   }
-
 }
 
 // MARK: - UITableViewDataSource

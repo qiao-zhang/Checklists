@@ -12,6 +12,21 @@ class AllListsViewController: UITableViewController {
   var dataManager: DataManager!
 }
 
+// MARK: - View Life Cycle
+extension AllListsViewController {
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    navigationController?.delegate = self
+    
+    let index = dataManager.indexOfSelectedChecklist
+    if 0 <= index && index < dataManager.lists.count {
+      let checklist = dataManager.lists[index]
+      performSegue(withIdentifier: "ShowChecklist", sender: checklist)
+    }
+  }
+}
+
 // MARK: - Navigation
 extension AllListsViewController {
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -76,6 +91,7 @@ extension AllListsViewController {
 extension AllListsViewController {
   override func tableView(_ tableView: UITableView,
                           didSelectRowAt indexPath: IndexPath) {
+    dataManager.indexOfSelectedChecklist = indexPath.row
     let checklist = dataManager.lists[indexPath.row]
     performSegue(withIdentifier: "ShowChecklist", sender: checklist)
   }
@@ -127,3 +143,13 @@ extension AllListsViewController: ListDetailViewControllerDelegate {
   }
 }
 
+// MARK: - UINavigationControllerDelegate
+extension AllListsViewController: UINavigationControllerDelegate {
+  func navigationController(_ navigationController: UINavigationController,
+                            willShow viewController: UIViewController,
+                            animated: Bool) {
+    if viewController === self {
+      dataManager.indexOfSelectedChecklist = -1
+    }
+  }
+}

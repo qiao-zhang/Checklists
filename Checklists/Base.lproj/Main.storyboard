@@ -254,7 +254,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="doneButton" destination="XuR-bl-TpI" id="N2b-By-n75"/>
+                        <outlet property="doneBarButton" destination="XuR-bl-TpI" id="nua-gT-NM1"/>
                         <outlet property="textField" destination="zUQ-IZ-FqZ" id="Mz9-Re-xHg"/>
                     </connections>
                 </tableViewController>

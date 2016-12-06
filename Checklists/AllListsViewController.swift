@@ -13,8 +13,9 @@ class AllListsViewController: UITableViewController {
   var lists: [Checklist]
   
   required init?(coder aDecoder: NSCoder) {
-    lists = Checklist.samples()
+    lists = []
     super.init(coder: aDecoder)
+    loadChecklists()
   }
 }
 
@@ -130,5 +131,36 @@ extension AllListsViewController: ListDetailViewControllerDelegate {
     guard let index = lists.index(of: checklist) else { return }
     let indexPath = IndexPath(row: index, section: 0)
     tableView.cellForRow(at: indexPath)?.textLabel?.text = checklist.name
+  }
+}
+
+// MARK: - Persistence
+extension AllListsViewController {
+  static private let listsKey = "Checklists"
+  
+  var documentsDirectory: URL {
+    return FileManager.default.urls(for: .documentDirectory,
+                                    in: .userDomainMask).first!
+  }
+  
+  var dataFilePath: URL {
+    return documentsDirectory.appendingPathComponent("Checklists.plist")
+  }
+  
+  func saveChecklists() {
+    let data = NSMutableData()
+    let archiver = NSKeyedArchiver(forWritingWith: data)
+    archiver.encode(lists, forKey: AllListsViewController.listsKey)
+    archiver.finishEncoding()
+    data.write(to: dataFilePath, atomically: true)
+  }
+  
+  func loadChecklists() {
+    guard let data = try? Data(contentsOf: dataFilePath) else { return }
+    let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+    lists =
+      unarchiver.decodeObject(forKey: AllListsViewController.listsKey)
+        as! [Checklist]
+    unarchiver.finishDecoding()
   }
 }

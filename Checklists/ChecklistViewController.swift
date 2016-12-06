@@ -7,17 +7,29 @@
 //
 
 import UIKit
+import RxSwift
 
 class ChecklistViewController: UITableViewController {
   
   var items: [ChecklistItem]
+  var checklist: Checklist!
+  
 
   required init?(coder aDecoder: NSCoder) {
-    items = [ChecklistItem]()
+    items = []
     super.init(coder: aDecoder)
     loadChecklistItems()
+  
   }
 
+}
+
+// MARK: - View Life Cycle
+extension ChecklistViewController {
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    title = checklist.name
+  }
 }
 
 // MARK: - Navigation
@@ -82,13 +94,18 @@ extension ChecklistViewController {
                           commit editingStyle: UITableViewCellEditingStyle,
                           forRowAt indexPath: IndexPath) {
     guard items.count > indexPath.row else { return }
-    items.remove(at: indexPath.row)
-    saveChecklistItems()
-    if items.isEmpty {
-      tableView.reloadData()
-    } else {
-      tableView.deleteRows(at: [indexPath], with: .automatic)
+    
+    if editingStyle == .delete {
+      items.remove(at: indexPath.row)
+      saveChecklistItems()
+      
+      if items.isEmpty {
+        tableView.reloadData()
+      } else {
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+      }
     }
+
   }
 }
 

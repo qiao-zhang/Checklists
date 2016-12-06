@@ -13,15 +13,15 @@ import RxCocoa
 protocol ItemDetailViewControllerDelegate: class {
   func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController)
   func itemDetailViewController(_ controller: ItemDetailViewController,
-                             didFinishAdding item: ChecklistItem)
+                                didFinishAdding item: ChecklistItem)
   func itemDetailViewController(_ controller: ItemDetailViewController,
-                             didFinishEditing item: ChecklistItem)
+                                didFinishEditing item: ChecklistItem)
 }
 
 class ItemDetailViewController: UITableViewController {
   
   @IBOutlet weak var textField: UITextField!
-  @IBOutlet weak var doneButton: UIBarButtonItem!
+  @IBOutlet weak var doneBarButton: UIBarButtonItem!
   
   @IBAction func cancel() {
     delegate?.itemDetailViewControllerDidCancel(self)
@@ -37,7 +37,6 @@ class ItemDetailViewController: UITableViewController {
     let item = ChecklistItem(name: name)
     delegate?.itemDetailViewController(self, didFinishAdding: item)
   }
-  
   
   var itemToEdit: ChecklistItem?
   weak var delegate: ItemDetailViewControllerDelegate?
@@ -56,7 +55,6 @@ class ItemDetailViewController: UITableViewController {
 
 }
 
-
 // MARK: - Rx Methods
 private extension ItemDetailViewController {
   func bindTextFieldToDoneButton() {
@@ -67,7 +65,7 @@ private extension ItemDetailViewController {
         return false
       }
       .distinctUntilChanged()
-      .bindTo(doneButton.rx.isEnabled)
+      .bindTo(doneBarButton.rx.isEnabled)
       .addDisposableTo(disposeBag)
   }
 }

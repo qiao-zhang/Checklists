@@ -9,10 +9,15 @@
 import UIKit
 import FontAwesome_swift
 
+enum ChecklistCategory: String {
+  case unknown = "Unknown"
+  case appointment = "Appointment"
+}
+
 class Checklist: NSObject {
   var name: String
   var items: [ChecklistItem]
-  var icon: FontAwesome
+  var category: ChecklistCategory
   
   var uncompletedItems: Int {
     return items.reduce(0) { $0 + ($1.completed ? 0 : 1) }
@@ -21,14 +26,20 @@ class Checklist: NSObject {
   init(name: String) {
     self.name = name
     items = []
-    icon = .clockO
+    category = .appointment
     super.init()
   }
 
   required init?(coder aDecoder: NSCoder) {
     name = aDecoder.decodeObject(forKey: "Name") as! String
     items = aDecoder.decodeObject(forKey: "Items") as! [ChecklistItem]
-    icon = aDecoder.decodeObject(forKey: "Icon") as! FontAwesome
+    if let categoryValue =
+      aDecoder.decodeObject(forKey: "Category") as? String {
+      
+      category = ChecklistCategory(rawValue: categoryValue) ?? .unknown
+    } else {
+      category = .unknown
+    }
     super.init()
   }
 }
@@ -38,7 +49,7 @@ extension Checklist: NSCoding {
   public func encode(with aCoder: NSCoder) {
     aCoder.encode(name, forKey: "Name")
     aCoder.encode(items, forKey: "Items")
-    aCoder.encode(icon, forKey: "Icon")
+    aCoder.encode(category.rawValue, forKey: "Category")
   }
 }
 

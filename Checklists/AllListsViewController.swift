@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FontAwesome_swift
 
 class AllListsViewController: UITableViewController {
 
@@ -61,27 +62,37 @@ extension AllListsViewController {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let cell = makeCell(for: tableView)
-    let checklist = DataManager.sharedInstance.lists[indexPath.row]
-    cell.textLabel?.text = checklist.name
-    
-    let count = checklist.uncompletedItems
-    if checklist.items.count == 0 {
-      cell.detailTextLabel?.text = "(No Items)"
-    } else if count == 0 {
-      cell.detailTextLabel?.text = "All Done!"
-    } else {
-      cell.detailTextLabel?.text = "\(checklist.uncompletedItems) Remaining"
-    }
-    cell.accessoryType = .detailDisclosureButton
-    return cell
-  }
-  
-  private func makeCell(for tableView: UITableView) -> UITableViewCell {
     let cellIdentifier = "Checklist Cell"
     let cell =
-      tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
-      UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+      tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
+                                    for: indexPath)
+        as! ChecklistCell
+    let checklist = DataManager.sharedInstance.lists[indexPath.row]
+    cell.titleLabel.text = checklist.name
+    
+    let iconName: FontAwesome?
+    switch checklist.category {
+    case .appointment:
+      iconName = FontAwesome.clockO
+    default:
+      iconName = nil
+    }
+    
+    if let iconName = iconName {
+      cell.imageView?.image =
+        UIImage.fontAwesomeIcon(name: iconName,
+                                textColor: UIColor.black,
+                                size: cell.iconImageView.bounds.size)
+    }
+    let count = checklist.uncompletedItems
+    if checklist.items.count == 0 {
+      cell.subtitleLabel.text = "(No Items)"
+    } else if count == 0 {
+      cell.subtitleLabel.text = "All Done!"
+    } else {
+      cell.subtitleLabel.text = "\(checklist.uncompletedItems) Remaining"
+    }
+
     return cell
   }
   

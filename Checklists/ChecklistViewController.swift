@@ -10,9 +10,7 @@ import UIKit
 import RxSwift
 
 class ChecklistViewController: UITableViewController {
-  
   var checklist: Checklist!
-
 }
 
 // MARK: - View Life Cycle
@@ -141,17 +139,10 @@ extension ChecklistViewController: ItemDetailViewControllerDelegate {
   func itemDetailViewController(_ controller: ItemDetailViewController,
                                 didFinishEditing item: ChecklistItem) {
     dismiss(animated: true, completion: nil)
-//    guard let index = items.index(of: item) else { return }
-    guard let index = checklist.items.index(where: { $0 === item }) else { return }
+    guard let index = checklist.items.index(of: item) else { return }
     let indexPath = IndexPath(row: index, section: 0)
     if let cell = tableView.cellForRow(at: indexPath) as? ChecklistItemCell {
       cell.configureTitle(with: item.name)
     }
   }
-}
-
-
-// MARK: - Persistence
-extension ChecklistViewController {
-  
 }

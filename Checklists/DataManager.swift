@@ -31,6 +31,12 @@ class DataManager {
     handleFirstTime()
   }
   
+  func sortChecklists() {
+    lists.sort { lhs, rhs in
+      lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
+    }
+  }
+  
   private func registerDefaults() {
     let dictionary: [String: Any] = [
       "ChecklistIndex": -1,
@@ -83,5 +89,6 @@ extension DataManager {
       unarchiver.decodeObject(forKey: DataManager.listsKey)
       as! [Checklist]
     unarchiver.finishDecoding()
+    sortChecklists()
   }
 }

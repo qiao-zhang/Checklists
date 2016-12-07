@@ -9,12 +9,8 @@
 import UIKit
 
 class AllListsViewController: UITableViewController {
-  var dataManager: DataManager!
-}
 
-// MARK: - View Life Cycle
-extension AllListsViewController {
-  
+  // MARK: View Life Cycle
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     tableView.reloadData()
@@ -25,9 +21,9 @@ extension AllListsViewController {
     
     navigationController?.delegate = self
     
-    let index = dataManager.indexOfSelectedChecklist
-    if 0 <= index && index < dataManager.lists.count {
-      let checklist = dataManager.lists[index]
+    let index = DataManager.sharedInstance.indexOfSelectedChecklist
+    if 0 <= index && index < DataManager.sharedInstance.lists.count {
+      let checklist = DataManager.sharedInstance.lists[index]
       performSegue(withIdentifier: "ShowChecklist", sender: checklist)
     }
   }
@@ -58,7 +54,7 @@ extension AllListsViewController {
 
   override func tableView(_ tableView: UITableView,
                           numberOfRowsInSection section: Int) -> Int {
-    return dataManager.lists.count
+    return DataManager.sharedInstance.lists.count
   }
 
   override func tableView(
@@ -66,7 +62,7 @@ extension AllListsViewController {
     cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     let cell = makeCell(for: tableView)
-    let checklist = dataManager.lists[indexPath.row]
+    let checklist = DataManager.sharedInstance.lists[indexPath.row]
     cell.textLabel?.text = checklist.name
     
     let count = checklist.uncompletedItems
@@ -92,10 +88,10 @@ extension AllListsViewController {
   override func tableView(_ tableView: UITableView,
                           commit editingStyle: UITableViewCellEditingStyle,
                           forRowAt indexPath: IndexPath) {
-    guard dataManager.lists.count > indexPath.row else { return }
+    guard DataManager.sharedInstance.lists.count > indexPath.row else { return }
     
     if editingStyle == .delete {
-      dataManager.lists.remove(at: indexPath.row)
+      DataManager.sharedInstance.lists.remove(at: indexPath.row)
       
       tableView.deleteRows(at: [indexPath], with: .automatic)
     }
@@ -107,8 +103,8 @@ extension AllListsViewController {
 extension AllListsViewController {
   override func tableView(_ tableView: UITableView,
                           didSelectRowAt indexPath: IndexPath) {
-    dataManager.indexOfSelectedChecklist = indexPath.row
-    let checklist = dataManager.lists[indexPath.row]
+    DataManager.sharedInstance.indexOfSelectedChecklist = indexPath.row
+    let checklist = DataManager.sharedInstance.lists[indexPath.row]
     performSegue(withIdentifier: "ShowChecklist", sender: checklist)
   }
   
@@ -126,7 +122,7 @@ extension AllListsViewController {
     else { return }
     
     controller.delegate = self
-    controller.checklistToEdit = dataManager.lists[indexPath.row]
+    controller.checklistToEdit = DataManager.sharedInstance.lists[indexPath.row]
     
     present(navigationController, animated: true, completion: nil)
   }
@@ -143,19 +139,17 @@ extension AllListsViewController: ListDetailViewControllerDelegate {
   func listDetailViewController(_ controller: ListDetailViewController,
                                 didFinishAdding checklist: Checklist) {
     dismiss(animated: true, completion: nil)
-    let index = dataManager.lists.count
-    dataManager.lists.append(checklist)
-    
-    let indexPath = IndexPath(row: index, section: 0)
-    tableView.insertRows(at: [indexPath], with: .automatic)
+    let index = DataManager.sharedInstance.lists.count
+    DataManager.sharedInstance.lists.append(checklist)
+    DataManager.sharedInstance.sortChecklists()
+    tableView.reloadData()
   }
   
   func listDetailViewController(_ controller: ListDetailViewController,
                                 didFinishEditing checklist: Checklist) {
     dismiss(animated: true, completion: nil)
-    guard let index = dataManager.lists.index(of: checklist) else { return }
-    let indexPath = IndexPath(row: index, section: 0)
-    tableView.cellForRow(at: indexPath)?.textLabel?.text = checklist.name
+    DataManager.sharedInstance.sortChecklists()
+    tableView.reloadData()
   }
 }
 
@@ -165,7 +159,7 @@ extension AllListsViewController: UINavigationControllerDelegate {
                             willShow viewController: UIViewController,
                             animated: Bool) {
     if viewController === self {
-      dataManager.indexOfSelectedChecklist = -1
+      DataManager.sharedInstance.indexOfSelectedChecklist = -1
     }
   }
 }

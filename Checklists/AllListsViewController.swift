@@ -14,6 +14,12 @@ class AllListsViewController: UITableViewController {
 
 // MARK: - View Life Cycle
 extension AllListsViewController {
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    tableView.reloadData()
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
@@ -60,7 +66,17 @@ extension AllListsViewController {
     cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     let cell = makeCell(for: tableView)
-    cell.textLabel?.text = dataManager.lists[indexPath.row].name
+    let checklist = dataManager.lists[indexPath.row]
+    cell.textLabel?.text = checklist.name
+    
+    let count = checklist.uncompletedItems
+    if checklist.items.count == 0 {
+      cell.detailTextLabel?.text = "(No Items)"
+    } else if count == 0 {
+      cell.detailTextLabel?.text = "All Done!"
+    } else {
+      cell.detailTextLabel?.text = "\(checklist.uncompletedItems) Remaining"
+    }
     cell.accessoryType = .detailDisclosureButton
     return cell
   }
@@ -69,7 +85,7 @@ extension AllListsViewController {
     let cellIdentifier = "Checklist Cell"
     let cell =
       tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
-      UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
+      UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
     return cell
   }
   

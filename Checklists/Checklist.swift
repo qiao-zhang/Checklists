@@ -11,6 +11,9 @@ import UIKit
 class Checklist: NSObject {
   var name: String
   var items: [ChecklistItem]
+  var uncompletedItems: Int {
+    return items.reduce(0) { $0 + ($1.completed ? 0 : 1) }
+  }
   
   init(name: String) {
     self.name = name

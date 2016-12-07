@@ -11,7 +11,9 @@ import Foundation
 class DataManager {
   
   var lists = [Checklist]()
-  static let sharedInstance = DataManager()
+  static let sharedInstance = {
+    return DataManager()
+  }()
   
   var indexOfSelectedChecklist: Int {
     get {

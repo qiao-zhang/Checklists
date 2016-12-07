@@ -26,7 +26,6 @@
 		16DFFD5C0A43F6106210AD8C /* Pods-Checklists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Checklists.release.xcconfig"; path = "Pods/Target Support Files/Pods-Checklists/Pods-Checklists.release.xcconfig"; sourceTree = "<group>"; };
 		696681133BDDC07AC9090D8B /* Pods-Checklists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Checklists.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Checklists/Pods-Checklists.debug.xcconfig"; sourceTree = "<group>"; };
 		AC12447C74A10A998718A64A /* Pods_Checklists.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Checklists.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E725FDE21DF8A21700AF8D9E /* Checklists-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Checklists-Bridging-Header.h"; sourceTree = "<group>"; };
 		E75A51491DF4ECF900A8A108 /* Checklists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Checklists.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E75A514C1DF4ECF900A8A108 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E75A514E1DF4ECF900A8A108 /* ChecklistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
@@ -79,7 +78,6 @@
 				E75A514A1DF4ECF900A8A108 /* Products */,
 				E5F81F4B6044DD63A4AE9E9C /* Pods */,
 				9DADCD0BE6E6CDF6329A8DF0 /* Frameworks */,
-				E725FDE21DF8A21700AF8D9E /* Checklists-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,7 +144,6 @@
 				TargetAttributes = {
 					E75A51481DF4ECF900A8A108 = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -365,13 +362,10 @@
 			baseConfigurationReference = 696681133BDDC07AC9090D8B /* Pods-Checklists.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Checklists/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.qiaozhang.Checklists;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Checklists-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -381,12 +375,10 @@
 			baseConfigurationReference = 16DFFD5C0A43F6106210AD8C /* Pods-Checklists.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Checklists/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.qiaozhang.Checklists;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Checklists-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

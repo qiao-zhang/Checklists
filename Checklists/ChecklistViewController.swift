@@ -39,7 +39,7 @@ extension ChecklistViewController {
       guard
         let navController = segue.destination as? UINavigationController,
         let controller =
-        navController.topViewController as? ItemDetailViewController,
+          navController.topViewController as? ItemDetailViewController,
         let cell = sender as? UITableViewCell,
         let indexPath = tableView.indexPath(for: cell)
         else { return }

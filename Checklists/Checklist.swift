@@ -12,6 +12,14 @@ import FontAwesome_swift
 enum ChecklistCategory: String {
   case unknown = "Unknown"
   case appointment = "Appointment"
+  case birthdays = "Birthdays"
+  case chores = "Chores"
+  case drinks = "Drinks"
+  case folder = "Folder"
+  case groceries = "Groceries"
+  case inbox = "Inbox"
+  case photos = "Photos"
+  case trips = "Trips"
 }
 
 class Checklist: NSObject {
@@ -35,7 +43,6 @@ class Checklist: NSObject {
     items = aDecoder.decodeObject(forKey: "Items") as! [ChecklistItem]
     if let categoryValue =
       aDecoder.decodeObject(forKey: "Category") as? String {
-      
       category = ChecklistCategory(rawValue: categoryValue) ?? .unknown
     } else {
       category = .unknown

@@ -46,6 +46,18 @@ extension AllListsViewController {
       else { return }
       controller.delegate = self
       controller.checklistToEdit = nil
+    } else if segue.identifier == "EditChecklist" {
+      guard
+        let navigationController = segue.destination as? UINavigationController,
+        let controller =
+          navigationController.topViewController as? ListDetailViewController,
+        let cell = sender as? UITableViewCell,
+        let indexPath = tableView.indexPath(for: cell)
+      else { return }
+      controller.delegate = self
+      controller.checklistToEdit =
+        DataManager.sharedInstance.lists[indexPath.row]
+      controller.title = "Edit Checklist"
     }
   }
 }
